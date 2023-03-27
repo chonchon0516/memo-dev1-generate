@@ -7,15 +7,16 @@ $pdo = new PDO(
     $dbPassword
 );
 
-$sql = 'SELECT * FROM pages';
+$sql = "SELECT id, content, title, DATE_FORMAT(created_at, '%Y年%m月%d日%H時%i分%s秒') AS created_at FROM pages";
 $statement = $pdo->prepare($sql);
 $statement->execute();
 $pages = $statement->fetchAll(PDO::FETCH_ASSOC);
-
 foreach ($pages as $key => $value) {
     $standard_key_array[$key] = $value['created_at'];
 }
-array_multisort($standard_key_array, SORT_DESC, $pages);
+if(!empty($pages)){
+  array_multisort($standard_key_array, SORT_DESC, $pages);
+}
 ?>
 
 <body>
