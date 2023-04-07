@@ -1,4 +1,5 @@
 <?php
+
 $dbUserName = 'root';
 $dbPassword = 'password';
 $pdo = new PDO(
@@ -9,6 +10,7 @@ $pdo = new PDO(
 
 $content = filter_input(INPUT_POST, 'content');
 $title = filter_input(INPUT_POST, 'title');
+
 
 // [解説！]ガード節になっている
 if (!empty($title) && !empty($content)) {

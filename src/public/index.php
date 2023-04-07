@@ -18,12 +18,36 @@ if(!empty($pages)){
   array_multisort($standard_key_array, SORT_DESC, $pages);
 }
 ?>
+<!DOCTYPE html>
+<html lang="ja">
 
-<body>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./main.js" defer></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+  <body>
+     <!-- モーダル要素 -->
+     <div class="form_parent">
+        <form class="form none_form" action="./store.php" method="post">
+            <p><span>タイトル</span></p>
+            <p><input class="contents" type="text" name="title"></p>
+            <p><span>内容</span></p>
+            <p><textarea class="contents content" name="content"></textarea></p>
+            <button class="addBlog">送信</button>
+            <a href="index.php" class="return">戻る</a>
+        </form>
+       
+    </div>
 
-  <div>
-    <a href="./create.php">メモを追加</a><br>
-  </div>
+    <header class="header">
+        <ul class="flex_header">
+            <li><a href="#" class="new_blog">メモを追加</li>
+        </ul>
+    </header>
 
   <div>
     <table border="1">
