@@ -1,22 +1,26 @@
 <?php
-$dbUserName = 'root';
-$dbPassword = 'password';
-$pdo = new PDO(
-    'mysql:host=mysql; dbname=memo; charset=utf8',
-    $dbUserName,
-    $dbPassword
-);
+ $pagesData = new PagesData();
+ $pages = $pagesData->fetchPages();
 
-$sql = "SELECT id, content, title, DATE_FORMAT(created_at, '%Y年%m月%d日%H時%i分%s秒') AS created_at FROM pages";
-$statement = $pdo->prepare($sql);
-$statement->execute();
-$pages = $statement->fetchAll(PDO::FETCH_ASSOC);
-foreach ($pages as $key => $value) {
-    $standard_key_array[$key] = $value['created_at'];
-}
-if(!empty($pages)){
-  array_multisort($standard_key_array, SORT_DESC, $pages);
-}
+  class PagesData { 
+    private $pdo; 
+
+    public function __construct() 
+    {
+      $dbUserName = "root";
+      $dbPassword = "password";
+      $this->pdo = new PDO("mysql:host=mysql; dbname=memo; charset=utf8", $dbUserName, $dbPassword);
+    }
+    public function fetchPages(): array 
+    {
+      $sql = "SELECT id, content, title, DATE_FORMAT(created_at, '%Y年%m月%d日%H時%i分%s秒') AS created_at FROM pages ORDER BY created_at DESC";
+      $statement = $this->pdo->prepare($sql);
+      $statement->execute();
+      $pagess = $statement->fetchAll(PDO::FETCH_ASSOC); 
+      return $pagess;  
+    }
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">

@@ -1,18 +1,32 @@
 <?php
-$dbUserName = 'root';
-$dbPassword = 'password';
-$pdo = new PDO(
-    'mysql:host=mysql; dbname=memo; charset=utf8',
-    $dbUserName,
-    $dbPassword
-);
+$id = filter_input(INPUT_GET, 'id');
+$pagesData = new PagesData();
+$page = $pagesData->fetchPages($id);
 
-$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+var_dump($page);
+  class PagesData { 
+    private $pdo; 
 
-$sql = "SELECT * FROM pages where id = $id";
-$statement = $pdo->prepare($sql);
-$statement->execute();
-$page = $statement->fetch();
+    public function __construct() 
+    {
+      $dbUserName = "root";
+      $dbPassword = "password";
+      $this->pdo = new PDO("mysql:host=mysql; dbname=memo; charset=utf8", $dbUserName, $dbPassword);
+    }
+    public function fetchPages($id): array 
+    {
+      $sql = "SELECT * FROM pages where id = $id";
+      $statement = $this->pdo->prepare($sql);
+      $statement->execute();
+      $page = $statement->fetchAll(PDO::FETCH_ASSOC); 
+      return $page;  
+    }
+  }
+
+
+
+
+
 ?>
 
 <body>
@@ -25,7 +39,13 @@ $page = $statement->fetch();
 
     <div>
       <label for="name">タイトル
-        <input type="text" name="title" value=<?php echo $page['title']; ?>>
+        <input type="text" name="title" value=<?php echo $page["title"]; ?>>
+      </label>
+    </div>
+
+    <div>
+      <label for="name">テーマ
+        <input type="text" name="theme" value=<?php print($page['title']); ?>>
       </label>
     </div>
 
