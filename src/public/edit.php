@@ -1,18 +1,31 @@
 <?php
-$dbUserName = 'root';
-$dbPassword = 'password';
-$pdo = new PDO(
-    'mysql:host=mysql; dbname=memo; charset=utf8',
-    $dbUserName,
-    $dbPassword
-);
+$id = filter_input(INPUT_GET, 'id');
+$pagesData = new PagesData();
+$page = $pagesData->fetchPage($id);
 
-$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+  class PagesData { 
+    private $pdo; 
 
-$sql = "SELECT * FROM pages where id = $id";
-$statement = $pdo->prepare($sql);
-$statement->execute();
-$page = $statement->fetch();
+    public function __construct() 
+    {
+      $dbUserName = "root";
+      $dbPassword = "password";
+      $this->pdo = new PDO("mysql:host=mysql; dbname=memo; charset=utf8", $dbUserName, $dbPassword);
+    }
+    public function fetchPage($id): array 
+    {
+      $sql = "SELECT * FROM pages where id = $id";
+      $statement = $this->pdo->prepare($sql);
+      $statement->execute();
+      $page = $statement->fetch(PDO::FETCH_ASSOC); 
+      return $page;  
+    }
+  }
+
+
+
+
+
 ?>
 
 <body>
@@ -25,7 +38,7 @@ $page = $statement->fetch();
 
     <div>
       <label for="name">タイトル
-        <input type="text" name="title" value=<?php echo $page['title']; ?>>
+        <input type="text" name="title" value=<?php echo $page["title"]; ?>>
       </label>
     </div>
 

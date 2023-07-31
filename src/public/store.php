@@ -1,29 +1,39 @@
 <?php
 
-$dbUserName = 'root';
-$dbPassword = 'password';
-$pdo = new PDO(
-    'mysql:host=mysql; dbname=memo; charset=utf8',
-    $dbUserName,
-    $dbPassword
-);
+class PageCollect {
+  private $pdo; 
+
+    public function __construct() 
+    {
+      $dbUserName = "root";
+      $dbPassword = "password";
+      $this->pdo = new PDO("mysql:host=mysql; dbname=memo; charset=utf8", $dbUserName, $dbPassword);
+    }
+    public function createPage ($title, $content):void
+    {
+      $sql = 'INSERT INTO `pages`(`title`, `content`) VALUES(:title, :content)';
+      $statement = $this->pdo->prepare($sql);
+      $statement->bindValue(':title', $title, PDO::PARAM_STR);
+      $statement->bindValue(':content', $content, PDO::PARAM_STR);
+      $statement->execute();
+
+    }
+}
+
 
 $content = filter_input(INPUT_POST, 'content');
 $title = filter_input(INPUT_POST, 'title');
 
 
+
 // [解説！]ガード節になっている
 if (!empty($title) && !empty($content)) {
-    $sql = 'INSERT INTO `pages`(`title`, `content`) VALUES(:title, :content)';
-    $statement = $pdo->prepare($sql);
-    $statement->bindValue(':title', $title, PDO::PARAM_STR);
-    $statement->bindValue(':content', $content, PDO::PARAM_STR);
-    $statement->execute();
-
-    // [解説！]リダイレクト処理
-    header('Location: ./index.php');
-    // [解説！]リダイレクトしても処理が一番下まで続いてしまうので「exit」しておこう！！！
-    exit();
+  $pageCollect = new PageCollect();
+  $pageCollect->createPage($title,$content);
+  // [解説！]リダイレクト処理
+  header('Location: ./index.php');
+  // [解説！]リダイレクトしても処理が一番下まで続いてしまうので「exit」しておこう！！！
+   exit();
 }
 $error = 'タイトルまたは本文が入力されていません';
 ?>
