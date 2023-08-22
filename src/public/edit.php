@@ -1,30 +1,10 @@
 <?php
+require_once __DIR__ . '/../vendor/autoload.php';
+use App\PagesData;
+
 $id = filter_input(INPUT_GET, 'id');
 $pagesData = new PagesData();
-$page = $pagesData->fetchPage($id);
-
-  class PagesData { 
-    private $pdo; 
-
-    public function __construct() 
-    {
-      $dbUserName = "root";
-      $dbPassword = "password";
-      $this->pdo = new PDO("mysql:host=mysql; dbname=memo; charset=utf8", $dbUserName, $dbPassword);
-    }
-    public function fetchPage($id): array 
-    {
-      $sql = "SELECT * FROM pages where id = $id";
-      $statement = $this->pdo->prepare($sql);
-      $statement->execute();
-      $page = $statement->fetch(PDO::FETCH_ASSOC); 
-      return $page;  
-    }
-  }
-
-
-
-
+$page = $pagesData->findPageById($id);
 
 ?>
 

@@ -1,25 +1,9 @@
 <?php
+require_once __DIR__ . '/../vendor/autoload.php';
+use App\PagesData;
+
  $pagesData = new PagesData();
- $pages = $pagesData->fetchPages();
-
-  class PagesData { 
-    private $pdo; 
-
-    public function __construct() 
-    {
-      $dbUserName = "root";
-      $dbPassword = "password";
-      $this->pdo = new PDO("mysql:host=mysql; dbname=memo; charset=utf8", $dbUserName, $dbPassword);
-    }
-    public function fetchPages(): array 
-    {
-      $sql = "SELECT id, content, title, DATE_FORMAT(created_at, '%Y年%m月%d日%H時%i分%s秒') AS created_at FROM pages ORDER BY created_at DESC";
-      $statement = $this->pdo->prepare($sql);
-      $statement->execute();
-      $pagess = $statement->fetchAll(PDO::FETCH_ASSOC); 
-      return $pagess;  
-    }
-  }
+ $pages = $pagesData->fetchPages(); 
 
 ?>
 <!DOCTYPE html>
