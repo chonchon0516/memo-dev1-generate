@@ -15,8 +15,16 @@ class PagesData {
       $sql = "SELECT id, content, title, DATE_FORMAT(created_at, '%Y年%m月%d日%H時%i分%s秒') AS created_at FROM pages ORDER BY created_at DESC";
       $statement = $this->pdo->prepare($sql);
       $statement->execute();
-      $pagess = $statement->fetchAll(PDO::FETCH_ASSOC); 
-      return $pagess;  
+      $pages = $statement->fetchAll(PDO::FETCH_ASSOC); 
+      return $pages;  
+    }
+    public function findPageById($id): array 
+    {
+      $sql = "SELECT * FROM pages where id = $id";
+      $statement = $this->pdo->prepare($sql);
+      $statement->execute();
+      $page = $statement->fetch(PDO::FETCH_ASSOC); 
+      return $page;  
     }
      public function deletePage($id): void
     {

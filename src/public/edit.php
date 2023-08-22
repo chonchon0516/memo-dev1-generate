@@ -4,7 +4,7 @@ use App\PagesData;
 
 $id = filter_input(INPUT_GET, 'id');
 $pagesData = new PagesData();
-$page = $pagesData->fetchPages($id);
+$page = $pagesData->findPageById($id);
 
 ?>
 
